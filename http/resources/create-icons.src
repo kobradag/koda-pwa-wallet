@@ -1,0 +1,30 @@
+convert icon1024.png -resize 144x144 ./icons/android-icon-144x144.png
+convert icon1024.png -resize 192x192 ./icons/android-icon-192x192.png
+convert icon1024.png -resize 36x36 ./icons/android-icon-36x36.png
+convert icon1024.png -resize 48x48 ./icons/android-icon-48x48.png
+convert icon1024.png -resize 72x72 ./icons/android-icon-72x72.png
+convert icon1024.png -resize 96x96 ./icons/android-icon-96x96.png
+convert icon1024.png -resize 114x114 ./icons/apple-icon-114x114.png
+convert icon1024.png -resize 120x120 ./icons/apple-icon-120x120.png
+convert icon1024.png -resize 144x144 ./icons/apple-icon-144x144.png
+convert icon1024.png -resize 152x152 ./icons/apple-icon-152x152.png
+convert icon1024.png -resize 180x180 ./icons/apple-icon-180x180.png
+convert icon1024.png -resize 57x57 ./icons/apple-icon-57x57.png
+convert icon1024.png -resize 60x60 ./icons/apple-icon-60x60.png
+convert icon1024.png -resize 72x72 ./icons/apple-icon-72x72.png
+convert icon1024.png -resize 76x76 ./icons/apple-icon-76x76.png
+convert icon1024.png -resize 144x144 ./icons/ms-icon-144x144.png
+convert icon1024.png -resize 150x150 ./icons/ms-icon-150x150.png
+convert icon1024.png -resize 310x310 ./icons/ms-icon-310x310.png
+convert icon1024.png -resize 70x70 ./icons/ms-icon-70x70.png
+
+convert icon1024.png -resize 192x192 ./icons/apple-icon-precomposed.png
+convert icon1024.png -resize 192x192 ./icons/apple-icon.png
+convert icon1024.png -resize 192x192 ./icons/icon.png
+convert icon1024.png -resize 512x512 ./logo512.png
+convert ./icons/icon.png -define icon:auto-resize=16,32,48,64,128,256 ./icons/favicon.ico
+
+convert logo512.png -resize 16x16 ./icons/favicon-16x16.png
+convert logo512.png -resize 32x32 ./icons/favicon-32x32.png
+convert logo512.png -resize 96x96 ./icons/favicon-96x96.png
+convert logo512.png -resize 192x192 ./logo/kaspa-192x192-white.png
