@@ -1,16 +1,16 @@
-import {RPC} from '/@kaspa/grpc-web';
+import {RPC} from '/@kobra/grpc-web';
 //console.log("PWA", window.PWA)
 //console.log("RPC", RPC)
 import '/style/style.js';
 import {
 	dpc, html, css, FlowApp, BaseElement, i18n
 } from '/flow/flow-ux/flow-ux.js';
-import {isMobile} from '/@kaspa/ux/kaspa-ux.js';
-export * from '/@kaspa/ux/kaspa-ux.js';
+import {isMobile} from '/@kobra/ux/kobra-ux.js';
+export * from '/@kobra/ux/kobra-ux.js';
 
 window.__testI18n = (test)=>i18n.setTesting(!!test);
 
-class KaspaWalletHeader extends BaseElement {
+class KobraWalletHeader extends BaseElement {
 	static get styles() {
 		return css`
 			:host {
@@ -57,9 +57,9 @@ class KaspaWalletHeader extends BaseElement {
 		`;
 	}
 }
-KaspaWalletHeader.define("kaspa-wallet-header")
+KobraWalletHeader.define("kobra-wallet-header")
 
-class KaspaWalletApp extends FlowApp {
+class KobraWalletApp extends FlowApp {
 
 	static get properties(){
 		return {
@@ -190,8 +190,8 @@ class KaspaWalletApp extends FlowApp {
 		let meta = {"generator":"pwa"}
 
 		return html`
-		${isMobile?'':html`<!--kaspa-wallet-header></kaspa-wallet-header-->`}
-		<kaspa-wallet .walletMeta='${meta}' reloadonlock="true" hidefaucet="true"></kaspa-wallet>
+		${isMobile?'':html`<!--kobra-wallet-header></kobra-wallet-header-->`}
+		<kobra-wallet .walletMeta='${meta}' reloadonlock="true" hidefaucet="true"></kobra-wallet>
 		`
 	}
 
@@ -203,7 +203,7 @@ class KaspaWalletApp extends FlowApp {
 	firstUpdated(){
 		super.firstUpdated();
 		console.log("app: firstUpdated")
-		this.wallet = this.renderRoot.querySelector("kaspa-wallet");
+		this.wallet = this.renderRoot.querySelector("kobra-wallet");
 		//console.log("this.wallet", this.wallet)
 		let verbose = localStorage.rpcverbose == 1;
 		this.wallet.setRPCBuilder(()=>{
@@ -216,4 +216,4 @@ class KaspaWalletApp extends FlowApp {
 
 }
 
-KaspaWalletApp.define("kaspa-wallet-app");
+KobraWalletApp.define("kobra-wallet-app");

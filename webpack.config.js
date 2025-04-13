@@ -12,17 +12,17 @@ let watch = false;
 console.log("MODE:", mode)
 module.exports = {
   entry: {
-    //'kaspa-wallet-worker': './http/kaspa-wallet-worker.js',
-    //'kaspa-wallet':'./http/kaspa-wallet.js'
+    //'kobra-wallet-worker': './http/kobra-wallet-worker.js',
+    //'kobra-wallet':'./http/kobra-wallet.js'
     'wallet-app': './http/wallet-app.js',
-    'kaspa-wallet-worker-core': './http/kaspa-wallet-worker-core.js'
+    'kobra-wallet-worker-core': './http/kobra-wallet-worker-core.js'
   },
   mode,
   watch,
   /*externals_:{
     "/style/style___.js": "/style/style.js",
     "/flow/flow-ux/flow-ux.js": "/flow/flow-ux/flow-ux.js",
-    "/kaspa-ux/kaspa-ux.js": "/kaspa-ux/kaspa-ux.js"
+    "/kobra-ux/kobra-ux.js": "/kobra-ux/kobra-ux.js"
   },*/
   resolve: {
     //importsFields: ["browser"],
@@ -34,11 +34,11 @@ module.exports = {
       "/flow/flow-ux/src/base-element.js": path.join(root, "node_modules/@aspectron/flow-ux/src/base-element.js"),
       "/flow/flow-ux/src/flow-swipeable.js": path.join(root, "node_modules/@aspectron/flow-ux/src/flow-swipeable.js"),
       "/flow/flow-ux/src/flow-i18n.js": path.join(root, "node_modules/@aspectron/flow-ux/src/flow-i18n.js"),
-      "/@kaspa/ux/kaspa-ux.js": path.join(root, "node_modules/@kaspa/ux/kaspa-ux.js"),
-      "/@kaspa/grpc-web": path.join(root, "./node_modules/@kaspa/grpc-web"),
+      "/@kobra/ux/kobra-ux.js": path.join(root, "node_modules/@kobra/ux/kobra-ux.js"),
+      "/@kobra/grpc-web": path.join(root, "./node_modules/@kobra/grpc-web"),
       "@aspectron/flow-grpc-web": path.join(root, "./node_modules/@aspectron/flow-grpc-web"),
-      //"kaspa-wallet-worker": "../kaspa-wallet-worker",
-      //"/kaspa-wallet-worker/kaspa-wallet-worker.js": "../kaspa-wallet-worker/kaspa-wallet-worker.js"
+      //"kobra-wallet-worker": "../kobra-wallet-worker",
+      //"/kobra-wallet-worker/kobra-wallet-worker.js": "../kobra-wallet-worker/kobra-wallet-worker.js"
     },
   	fallback: {
   		"path": false,
@@ -53,7 +53,7 @@ module.exports = {
       "vm": require.resolve("vm-browserify"),
       "os": false,
       "nw.gui": false,
-      "@kaspa/wallet-worker": require.resolve("./node_modules/@kaspa/wallet-worker")
+      "@kobra/wallet-worker": require.resolve("./node_modules/@kobra/wallet-worker")
   	}
   },
   experiments: {

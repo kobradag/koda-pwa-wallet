@@ -48,15 +48,15 @@ const {FlowHttp} = require('@aspectron/flow-http')({
 	CookieSignature,
 	grpc, protoLoader
 });
-const { Wallet, initKaspaFramework, log } = require('@kaspa/wallet-worker');
-const { RPC } = require('@kaspa/grpc-node');
-const { dpc } = require('@kaspa/wallet/dist/utils/helper');
+const { Wallet, initKobraFramework, log } = require('@kobra/wallet-worker');
+const { RPC } = require('@kobra/grpc-node');
+const { dpc } = require('@kobra/wallet/dist/utils/helper');
 
-class KaspaPWA extends EventEmitter {
+class KobraPWA extends EventEmitter {
 	constructor(appFolder){
 		super();
 		this.appFolder = appFolder;
-		this.config = utils.getConfig(path.join(appFolder, "config", "kaspa-wallet-pwa"));
+		this.config = utils.getConfig(path.join(appFolder, "config", "kobra-wallet-pwa"));
 		this.ip_limit_map = new Map();
 		this.cache = { };
 
@@ -78,7 +78,7 @@ class KaspaPWA extends EventEmitter {
 
 			this.http_session_ = {
 				secret:"34343546756767567657534578678672346573237436523798",
-				key:"kaspa-faucet-pwa"
+				key:"kobra-faucet-pwa"
 			};
 		}else{
 			this.http_session_ = this.config.http.session;
@@ -116,7 +116,7 @@ class KaspaPWA extends EventEmitter {
 					'/dist':'dist'
 				},
 				grpc:{
-					protoPath:path.join(this.appFolder, "node_modules/@kaspa/grpc/proto/messages.proto"),
+					protoPath:path.join(this.appFolder, "node_modules/@kobra/grpc/proto/messages.proto"),
 					server:this.grpc.host,
 					packageKey:"protowire",
 					options : {
@@ -137,13 +137,13 @@ class KaspaPWA extends EventEmitter {
 			let config = this.config||{};
 			const {folders={}} = config;
 			const {
-				kaspaUX='/node_modules/@kaspa/ux',
+				kobraUX='/node_modules/@kobra/ux',
 				flowUX='/node_modules/@aspectron/flow-ux',
-				walletWorker='/node_modules/@kaspa/wallet-worker',
+				walletWorker='/node_modules/@kobra/wallet-worker',
 				secp256k1='/node_modules/secp256k1-wasm/http',
-				grpcWeb='/node_modules/@kaspa/grpc-web',
+				grpcWeb='/node_modules/@kobra/grpc-web',
 				flowGRPCWeb='/node_modules/@aspectron/flow-grpc-web',
-				kaspaCoreLib='/node_modules/@kaspa/core-lib'
+				kobraCoreLib='/node_modules/@kobra/core-lib'
 			} = folders;
 
 			app.use([
@@ -155,10 +155,10 @@ class KaspaPWA extends EventEmitter {
 			// console.log("walletWorker", walletWorker);
 			const files = [
 				'./',
-				flowUX,kaspaUX,grpcWeb,
-				'/node_modules/@kaspa/wallet',
-				'/node_modules/@kaspa/grpc',
-				kaspaCoreLib
+				flowUX,kobraUX,grpcWeb,
+				'/node_modules/@kobra/wallet',
+				'/node_modules/@kobra/grpc',
+				kobraCoreLib
 			].map(v=>path.join(__dirname,v,'package.json'));
 
 			const indexFile = path.join(__dirname,'http','index.html');
@@ -197,8 +197,8 @@ class KaspaPWA extends EventEmitter {
 				res.send(indexHtml);
 			})
 
-			//kaspa-wallet-worker/worker.js
-			app.use('/resources', express.static( path.join(kaspaUX, "resources"), {
+			//kobra-wallet-worker/worker.js
+			app.use('/resources', express.static( path.join(kobraUX, "resources"), {
 				index: 'false'
 			}))
 			app.use('/', express.static( path.join(rootFolder, "http"), {
@@ -213,13 +213,13 @@ class KaspaPWA extends EventEmitter {
 				let session = req.session;
 				let tsDiff = (Date.now() - (session.healthResTs || 0))/1000;
 				session.healthResTs = Date.now();
-				let isConnected = this.grpc.kaspad.client.isConnected;
+				let isConnected = this.grpc.kobrad.client.isConnected;
 				if (tsDiff < 20){
 					res.status(504).send(JSON.stringify({code:"PLEASE-WAIT-20-SEC-FOR-BLOCK-INFO-REQUEST", isConnected}))
 					return
 				}
 
-				info = await this.grpc.kaspad.request('getInfoRequest')
+				info = await this.grpc.kobrad.request('getInfoRequest')
 					.then(i=>{
 						if (!i?.isSynced){
 							status = 502;
@@ -234,13 +234,13 @@ class KaspaPWA extends EventEmitter {
 				});
 				res.status(status).send(JSON.stringify({info, isConnected}))
 			})
-			app.get('/kaspa-wallet-worker/worker.js', (req, res)=>{
-				res.sendFile(path.join(rootFolder, 'dist/kaspa-wallet-worker-core.js'))
+			app.get('/kobra-wallet-worker/worker.js', (req, res)=>{
+				res.sendFile(path.join(rootFolder, 'dist/kobra-wallet-worker-core.js'))
 			})
 			app.get('/node_modules/@aspectron/flow-grpc-web/flow-grpc-web.js', (req, res)=>{
 				res.redirect('/node_modules/@aspectron/flow-grpc-web/lib/flow-grpc-web.js')
 			})
-			app.get('(/kaspa-wallet-worker)?/secp256k1.wasm', (req, res)=>{
+			app.get('(/kobra-wallet-worker)?/secp256k1.wasm', (req, res)=>{
 				res.setHeader("Content-Type", "application/wasm")
 				let file = path.join(rootFolder, secp256k1, 'secp256k1.wasm');
 				let stream = fs.createReadStream(file);
@@ -265,11 +265,11 @@ class KaspaPWA extends EventEmitter {
 				rootFolder,
 				folders:[
 					{url:'/http', folder:path.join(rootFolder, "http")},
-					{url:'/kaspa-ux', folder:kaspaUX},
+					{url:'/kobra-ux', folder:kobraUX},
 					{url:'/node_modules/@aspectron/flow-ux', folder:flowUX},
-					{url:'/kaspa-wallet-worker', folder:walletWorker},
+					{url:'/kobra-wallet-worker', folder:walletWorker},
 					{url:'/resources/extern', folder:flowUX+'/resources/extern'},
-					{url:'/@kaspa/grpc-web', folder:grpcWeb},
+					{url:'/@kobra/grpc-web', folder:grpcWeb},
 					{url:'/node_modules/@aspectron/flow-grpc-web', folder:flowGRPCWeb},
 					{url:'/flow-qrscanner', folder:'../flow-qrscanner'}
 				]
@@ -280,9 +280,9 @@ class KaspaPWA extends EventEmitter {
 		flowHttp.init();
 	}
 
-	async initKaspa() {
+	async initKobra() {
 
-		await initKaspaFramework();
+		await initKobraFramework();
 
 		const aliases = Object.keys(Wallet.networkAliases);
 		let filter = aliases.map((alias) => { return this.options[alias] ? Wallet.networkAliases[alias] : null; }).filter(v=>v);
@@ -299,10 +299,10 @@ class KaspaPWA extends EventEmitter {
 
 		//this.rpc = { }
 		log.info(`Creating gRPC binding for network '${network}' at ${host}`);
-		const kaspad = new RPC({ clientConfig:{ host } });
-		kaspad.onError((error)=>{ log.error(`gRPC[${host}] ${error}`); })
-		kaspad.onConnect(async()=>{
-			let res = await kaspad.getUtxosByAddresses([])
+		const kobrad = new RPC({ clientConfig:{ host } });
+		kobrad.onError((error)=>{ log.error(`gRPC[${host}] ${error}`); })
+		kobrad.onConnect(async()=>{
+			let res = await kobrad.getUtxosByAddresses([])
 			.catch((err)=>{
 				//error = err;
 			})
@@ -314,7 +314,7 @@ class KaspaPWA extends EventEmitter {
 			log.info("grpc.flags:", this.grpc.flags, 'getUtxosByAddresses:test:', res)
 		})
 
-		this.grpc = { network, port, host, kaspad, flags:{} }
+		this.grpc = { network, port, host, kobrad, flags:{} }
 	}
 
 	async initMonitors() {
@@ -322,15 +322,15 @@ class KaspaPWA extends EventEmitter {
 		const medianShift = Math.ceil(263*0.5*1000);
 
 		const poll = async () => {
-			if(!this.grpc.kaspad.client.isConnected)
+			if(!this.grpc.kobrad.client.isConnected)
 				return dpc(3500, ()=>{ poll(); });
 			const ts_ = new Date();
 			const ts = ts_.getTime() - medianShift;
 			const data = { }
 
 			try {
-				const bdi = await  this.grpc.kaspad.request('getBlockDagInfoRequest');
-				const vspbs = await  this.grpc.kaspad.request('getVirtualSelectedParentBlueScoreRequest');
+				const bdi = await  this.grpc.kobrad.request('getBlockDagInfoRequest');
+				const vspbs = await  this.grpc.kobrad.request('getVirtualSelectedParentBlueScoreRequest');
 
 				const blueScore = parseInt(vspbs.blueScore);
 				const blockCount = parseInt(bdi.blockCount);
@@ -404,7 +404,7 @@ class KaspaPWA extends EventEmitter {
 		const { flowHttp } = this;
 		let k = ()=> (Math.random()*100).toFixed(0);
 		let randomIP = `${k()}.${k()}.${k()}.${k()}`
-		const faucetUrl = 'https://faucet.kaspanet.io';
+		const faucetUrl = 'https://faucet.kobranet.io';
 		
 		let i18nEntries = this.getI18nEntries();
 		let i18nRequests = flowHttp.sockets.subscribe("get-app-i18n-entries");
@@ -502,7 +502,7 @@ class KaspaPWA extends EventEmitter {
 			.option('--testnet','use testnet network')
 			.option('--devnet','use devnet network')
 			.option('--simnet','use simnet network')
-			.option('--mainnet','use kaspa/mainnet network')
+			.option('--mainnet','use kobra/mainnet network')
 			//.option('--no-ssl','disable SSL')
 			.option('--host <host>','http host (default: localhost)', 'localhost')
 			.option('--port <port>',`set http port (default ${this.options.port})`, (port)=>{
@@ -528,7 +528,7 @@ class KaspaPWA extends EventEmitter {
 
 				log.level = (this.options.verbose&&'verbose')||(this.options.debug&&'debug')||(this.options.log)||'info';
 
-				await this.initKaspa();
+				await this.initKobra();
 				await this.initHttp();
 				await this.initRPC();
 				await this.initMonitors();
@@ -540,7 +540,7 @@ class KaspaPWA extends EventEmitter {
 					setTimeout(async ()=>{
 						console.log("::::RESTART::::")
 						process.exit(0);
-						//kaspaPWA.flowHttp.server.close(()=>{
+						//kobraPWA.flowHttp.server.close(()=>{
 						//	process.exit("RESTART");
 						//});
 					}, seconds * 1000)
@@ -561,9 +561,9 @@ class KaspaPWA extends EventEmitter {
 }
 
 (async () => {
-	let kaspaPWA = new KaspaPWA(__dirname);
+	let kobraPWA = new KobraPWA(__dirname);
 	try {
-		await kaspaPWA.main();
+		await kobraPWA.main();
 	} catch(ex) {
 		console.log(ex.toString());
 	}

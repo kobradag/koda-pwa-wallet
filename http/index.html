@@ -43,7 +43,7 @@
 	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="/flow/flow-ux/resources/css/reset.css" />
 	<link rel="stylesheet" type="text/css" href="/flow/flow-ux/flow-ux.css" />
-	<link rel="stylesheet" type="text/css" href="/kaspa-ux/kaspa-ux.css" />
+	<link rel="stylesheet" type="text/css" href="/kobra-ux/kobra-ux.css" />
 	<link rel="stylesheet" type="text/css" href="/style/main.css" />
 	<script src="/sockjs/sockjs.js"></script>
 	<script type="text/javascript">
@@ -51,15 +51,15 @@
 			debug: true,
 			baseUrl: "/flow/flow-ux/",
 			theme: {
-				iconPath: "/kaspa-ux/resources/extern/fonts/fontawesome/sprites/",
+				iconPath: "/kobra-ux/resources/extern/fonts/fontawesome/sprites/",
 				iconFile: "light",
 				icons: {
 					//"info-circle": "light:acorn"
 				}
 			}
 		}
-		var KaspaConfig = {
-			baseUrl: "/kaspa-ux",
+		var KobraConfig = {
+			baseUrl: "/kobra-ux",
 			ident: "kobra:ident"
 		}
 		if ('serviceWorker' in navigator) {
@@ -86,8 +86,8 @@
 	<script type="module" src="/dist/wallet-app.js"></script>
 	<!--script type="module" src="/flow/flow-ux/flow-ux.js"></script-->
 	<!--script type="module">
-		//import {RPC} from '/@kaspa/grpc-web/dist/index.js';
-		import {RPC} from '/@kaspa/grpc-web/dist/lib/rpc.js';
+		//import {RPC} from '/@kobra/grpc-web/dist/index.js';
+		import {RPC} from '/@kobra/grpc-web/dist/lib/rpc.js';
 		let rpc  = new RPC({clientConfig:{path:"/rpc"}})
 		console.log("RPC", rpc);
 		let test = async()=>{
@@ -119,7 +119,7 @@
 	<svg style="display:none">
 		<use href="/fonts/fontawesome/sprites/light.svg#home" />
 	</svg>
-	<kaspa-wallet-app></kaspa-wallet-app>
+	<kobra-wallet-app></kobra-wallet-app>
 	<flow-add-to-home message="Add Kobra wallet App to Home screen"></flow-add-to-home>
 	<!--flow-qrcode-scanner></flow-qrcode-scanner-->
 	<!--video id="live" width="320" height="240" autoplay style="border:5px solid #000000; display:none;"> </video>

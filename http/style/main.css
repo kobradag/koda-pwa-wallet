@@ -1,9 +1,9 @@
 body {
-	--kaspa-wallet-top-menu-top: 10px; /* Variable for top margin/padding */
-	--kaspa-wallet-right-area-height: calc(100vh - 80px); /* Dynamic height calculation */
+	--kobra-wallet-top-menu-top: 10px; /* Variable for top margin/padding */
+	--kobra-wallet-right-area-height: calc(100vh - 80px); /* Dynamic height calculation */
 }
 
-kaspa-wallet-app {
+kobra-wallet-app {
 	flex: 1;
 	overflow: hidden; /* Prevents overflow of content */
 	position: fixed; /* Fixed position to cover viewport */
@@ -18,11 +18,11 @@ kaspa-wallet-app {
 	flex-direction: column; /* Vertical layout of children */
 }
 
-kaspa-wallet {
+kobra-wallet {
 	
 }
 
-kaspa-walle
+kobra-walle
 
 }
 
