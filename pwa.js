@@ -181,7 +181,7 @@ class KobraPWA extends EventEmitter {
 							indexHtml = data.replace(
 								`<script type="module" src="/dist/wallet-app.js"></script>`,
 								`\n${script}\n\t<script type="module" src="/dist/wallet-app.js?v=${hash}"></script>`);
-							indexHtml = indexHtml.replace('ident:"hoosat:ident"', `ident:"${hash}"`)
+							indexHtml = indexHtml.replace('ident:":ident"', `ident:"${hash}"`)
 							//console.log(indexHtml);
 							resolve();
 						})
@@ -292,7 +292,7 @@ class KobraPWA extends EventEmitter {
 			process.exit(1);
 		}
 
-		let network = filter.shift() || 'hoosat-mainnet';
+		let network = filter.shift() || '-mainnet';
 		let port = Wallet.networkTypes[network].port;
 		let host = this.options.grpc || `127.0.0.1:${port}`;
 
@@ -489,7 +489,7 @@ class KobraPWA extends EventEmitter {
 		const program = this.program = new Command();
 		program
 			.version('0.0.1', '--version')
-			.description('Hoosat Wallet')
+			.description(' Wallet')
 			.helpOption('--help','display help for command')
 			.option('--log <level>',`set log level ${logLevels.join(', ')}`, (level)=>{
 				if(!logLevels.includes(level))
